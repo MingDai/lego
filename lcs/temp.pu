@@ -1,0 +1,83 @@
+top_100t = MatchPlayerStats(
+  player = Player.get(summoner_name='100 Ssumday'),
+  kills = 2,
+  deaths = 7,
+  assists = 8,
+  champion=Champion.get(name='Renekton'),
+  gold=19200,
+  minons=392,
+  position='TOP',
+)
+
+jg_100t = MatchPlayerStats(
+  player = Player.get(summoner_name='100 Ssumday'),
+  kills = 2,
+  deaths = 7,
+  assists = 8,
+  champion=Champion.get(name='Renekton'),
+  gold=19200,
+  minons=392,
+  position='TOP',
+)
+mid_100t = MatchPlayerStats(
+  player = Player.get(summoner_name='100 Ssumday'),
+  kills = 2,
+  deaths = 7,
+  assists = 8,
+  champion=Champion.get(name='Renekton'),
+  gold=19200,
+  minons=392,
+  position='TOP',
+)
+bot_100t = MatchPlayerStats(
+  player = Player.get(summoner_name='100 Ssumday'),
+  kills = 2,
+  deaths = 7,
+  assists = 8,
+  champion=Champion.get(name='Renekton'),
+  gold=19200,
+  minons=392,
+  position='TOP',
+)
+sup_100t = MatchPlayerStats(
+  player = p,
+  kills = 2,
+  deaths = 7,
+  assists = 8,
+  champion=c,
+  gold=19200,
+  minions=392,
+  position='TOP',
+)
+
+
+md1 = {
+  "blueTeam": {
+    "players" : {
+      "top": {
+        "summonerName": "100 Ssumday",
+        "champion": "Renekton",
+        "stats": {
+          "kills": 2,
+          "deaths": 7,
+          "assists": 8,
+          "firstBlood": False,
+          "gold": 19200,
+          "minions": 392,
+        },
+      },
+       "jg": {
+        "summonerName": "100 Closer",
+        "champion": "Taliyah",
+        "stats": {
+          "kills": 4,
+          "deaths": 5,
+          "assists": 14,
+          "firstBlood": False,
+          "gold": 18000,
+          "minions": 52,
+        },
+      },
+    },
+  },
+}
