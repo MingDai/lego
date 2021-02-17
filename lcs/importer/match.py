@@ -7,8 +7,8 @@ class MatchImporter:
   
   def __init__(self, patch, blue_team, red_team, tournament_code):
     self.patch = patch
-    self.blue_team = Team.objects.get(symbol=blue_team)
-    self.red_team = Team.objects.get(symbol=red_team)
+    self.blue_team = Team.objects.get_or_create(symbol=blue_team)[0]
+    self.red_team = Team.objects.get_or_create(symbol=red_team)[0]
     self.tournament = Tournament.objects.get(tournament_code=tournament_code)
 
   def create_player_stats(self, player_dict, position):
@@ -24,12 +24,12 @@ class MatchImporter:
       first_blood = player_dict['stats']['firstBlood'],
     )
 
-  def create_team_stats(self, team_dict):
-    top = self.create_player_stats(team_dict['players']['top'], 'TOP')
-    jg = self.create_player_stats(team_dict['players']['jg'], 'JG')
-    mid = self.create_player_stats(team_dict['players']['mid'], 'MID')
-    bot = self.create_player_stats(team_dict['players']['bottom'], 'BOT')
-    sup = self.create_player_stats(team_dict['players']['support'], 'SUP')
+  def create_team_stats(self, team_dict, team):
+    top = self.create_player_stats(team_dict['players'][0], 'TOP')
+    jg = self.create_player_stats(team_dict['players'][1], 'JG')
+    mid = self.create_player_stats(team_dict['players'][2], 'MID')
+    bot = self.create_player_stats(team_dict['players'][3], 'BOT')
+    sup = self.create_player_stats(team_dict['players'][4], 'SUP')
 
     obj = MatchObjectiveStats.objects.create(
       dragons = team_dict['teamStats']['dragons'],
@@ -37,7 +37,7 @@ class MatchImporter:
       turrets = team_dict['teamStats']['turrets'],
     )
     return MatchTeamStats.objects.create(
-      team = self.blue_team,
+      team = team,
       top = top,
       jungle = jg,
       mid = mid,
@@ -47,15 +47,15 @@ class MatchImporter:
     )
   
   def save_from_dict(self, dict):
-    bt = self.create_team_stats(dict['blueTeam'])
-    rt = self.create_team_stats(dict['redTeam'])
+    bt = self.create_team_stats(dict['blueTeam'], self.blue_team)
+    rt = self.create_team_stats(dict['redTeam'], self.red_team)
 
     if dict['winner'] == "blue":
       winner = bt
       loser = rt
     else:
-      winner = bt
-      loser = rt
+      winner = rt
+      loser = bt
 
     minutes, seconds = [int(x) for x in dict['gameDuration'].split(':')]
 
@@ -68,6 +68,6 @@ class MatchImporter:
       red_team=rt,
       tournament=self.tournament,
       patch=self.patch,
-      date=datetime.strptime(dict['date'], "%Y-%m-%d").date(),
+      date=datetime.strptime(dict['date'], "%m/%d/%Y").date(),
       game_duration=minutes*60 + seconds,
     )

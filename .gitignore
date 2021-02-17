@@ -30,6 +30,7 @@ pip-delete-this-directory.txt
 .cache
 nosetests.xml
 coverage.xml
+match_importer.txt
 
 # Translations
 *.mo
@@ -51,3 +52,7 @@ docs/_build/
 
 # Database
 db.sqlite3
+
+# secrets
+secrets/
+

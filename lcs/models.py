@@ -69,8 +69,16 @@ class MatchPlayerStats(models.Model):
       self.minions * 0.02, 
       ten_kills_or_assists * 2
     )
-    def __str__(self):
-      return 'K: {}, D: {}, A: {}'.format(self.kills, self.deaths, self.assists)
+  def __str__(self):
+    return '<{}> {} {} {}/{}/{}'.format(
+      self.id,
+      self.player.summoner_name,
+      self.champion.name,
+      self.id,
+      self.kills,
+      self.deaths,
+      self.assists
+    )
 
 class MatchTeamStats(models.Model):
   team = models.ForeignKey(Team, on_delete=models.PROTECT)
@@ -80,6 +88,8 @@ class MatchTeamStats(models.Model):
   bottom = models.OneToOneField(MatchPlayerStats, on_delete=models.PROTECT, related_name='bottom_for_team')
   support = models.OneToOneField(MatchPlayerStats, on_delete=models.PROTECT, related_name='support_for_team')
   objective = models.OneToOneField(MatchObjectiveStats, on_delete=models.PROTECT)
+  def __str__(self):
+    return '<{}> {}'.format(self.id, self.team)
 
 class Match(models.Model):
   url = models.CharField(max_length=200)
@@ -91,7 +101,6 @@ class Match(models.Model):
   patch = models.CharField(max_length=10)
   date = models.DateField()
   game_duration = models.IntegerField()  # time in seconds
-
   def __str__(self):
-    return '{} W: {}, L: {}'.format(self.date, self.winning_team.team, self.losing_team.team)
+    return '<{}> date: {} W: {}, L: {}'.format(self.id, self.date, self.winning_team.team, self.losing_team.team)
   # Find all match historys of Huni when he is against Impact
